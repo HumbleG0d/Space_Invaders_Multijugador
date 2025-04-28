@@ -65,6 +65,7 @@ public class GameSingleScreen extends AbstractScreen {
         nave.drawPj(batch);
 
         viewScore();
+        viewlivesNave();
         batch.end();
     }
 
@@ -112,13 +113,17 @@ public class GameSingleScreen extends AbstractScreen {
                     enemy.getBullets().remove(bullet);
                 }
                 // Verificar colisión con la nave
-                if (nave.getIsAlive() && CollisionManager.isCollision(bullet, nave)) {
-                    nave.setIsAlive(false);
+                if (CollisionManager.isCollision(bullet, nave)) {
+                    //Reducimos el numero de vidas
+                    nave.setLive(1);
                     enemy.getBullets().remove(bullet);
                     Gdx.app.log("COLLISION", "Nave destruida en x: " + nave.getPosition().x + ", y: " + nave.getPosition().y);
                     //Mostrar interfaz de fin de juego
-                    game.setScreen(new EndGameScreen(game));
-                    break;
+
+                    if(nave.getLive() == 0) {
+                        game.setScreen(new EndGameScreen(game));
+                        break;
+                    }
                 }
             }
         }
@@ -129,7 +134,11 @@ public class GameSingleScreen extends AbstractScreen {
         font.draw(batch , String.valueOf(score), 120 , 550);
         font.draw(batch , "WINNER" , 300 , 580);
         font.draw(batch , "OPPONENT" , 500 , 580);
-        //Agregar la actualizacion de los puntajes
+    }
+
+    private void viewlivesNave(){
+        font.draw(batch , "LIVE:" , 40 , 40);
+        font.draw(batch , String.valueOf(nave.getLive()) , 120 , 40);
     }
 
 
