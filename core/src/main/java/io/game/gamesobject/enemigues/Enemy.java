@@ -13,7 +13,7 @@ import io.game.gamesobject.Bullet;
 import io.game.gamesobject.Pj;
 
 public class Enemy extends Pj {
-    
+
     private int type;
     private BitmapFont font;
     private List<Bullet> bullets;
@@ -27,6 +27,10 @@ public class Enemy extends Pj {
         font.getData().setScale(0.5f);
     }
 
+    public int getType(){
+        return type;
+    }
+
     private String typeEnemigue(int type) {
         return switch (type) {
             case 1 -> "  [o][o]\n   [][][]\n [= || =]";
@@ -34,6 +38,16 @@ public class Enemy extends Pj {
             case 3 -> "   o^^o\n  /###\\ \n (#[o]#)";
             case 4 -> "  +-+-+\n<|O O|>\n|=====|\n  \\_|o|_/";
             default -> "  ----  \n -****- \n-******-\n -****- \n  ---- ";
+        };
+    }
+
+    public int pointTypeEnemigue(int type) {
+        return switch (type){
+            case 1 -> 60;
+            case 2 -> 50;
+            case 3 -> 40;
+            case 4 -> 30;
+            default -> 0;
         };
     }
 
