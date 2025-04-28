@@ -22,6 +22,7 @@ public class GameSingleScreen extends AbstractScreen {
     private BitmapFont font;
     private EnemyBlock enemyBlock;
     private Nave nave;
+    private int score = 0;
 
     public GameSingleScreen(MainGame game) {
         super(game);
@@ -34,6 +35,10 @@ public class GameSingleScreen extends AbstractScreen {
     }
 
     private void initializeResources() {
+
+        font = new BitmapFont();
+        font.getData().setScale(2f);
+
         // Inicializar enemigos (4 filas x 8 columnas)
         List<Enemy> enemies = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
@@ -54,11 +59,12 @@ public class GameSingleScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update(delta);
-
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         enemyBlock.drawPj(batch);
         nave.drawPj(batch);
+
+        viewScore();
         batch.end();
     }
 
@@ -72,6 +78,7 @@ public class GameSingleScreen extends AbstractScreen {
 
         // Actualizar balas y detectar colisiones
         updateBulletsAndCollisions(delta);
+        //actualiceScore();
     }
 
     private void updateBulletsAndCollisions(float delta) {
@@ -88,6 +95,7 @@ public class GameSingleScreen extends AbstractScreen {
                 if (CollisionManager.isCollision(bullet, enemy)) {
                     enemyBlock.getEnemies().remove(enemy);
                     nave.getBullets().remove(bullet);
+                    score += enemy.pointTypeEnemigue(enemy.getType());
                     Gdx.app.log("COLLISION",
                             "Enemigo eliminado en x: " + enemy.getPosition().x + ", y: " + enemy.getPosition().y);
                     break;
@@ -115,6 +123,15 @@ public class GameSingleScreen extends AbstractScreen {
             }
         }
     }
+
+    private void viewScore(){
+        font.draw(batch , "YOU" , 100 , 580);
+        font.draw(batch , String.valueOf(score), 120 , 550);
+        font.draw(batch , "WINNER" , 300 , 580);
+        font.draw(batch , "OPPONENT" , 500 , 580);
+        //Agregar la actualizacion de los puntajes
+    }
+
 
     @Override
     public void resize(int width, int height) {
