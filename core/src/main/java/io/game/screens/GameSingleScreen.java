@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.game.MainGame;
 import io.game.gamesobject.Bullet;
+import io.game.gamesobject.CollisionManager;
 import io.game.gamesobject.enemigues.Enemy;
 import io.game.gamesobject.enemigues.EnemyBlock;
 import io.game.gamesobject.nave.Nave;
@@ -72,7 +73,7 @@ public class GameSingleScreen extends AbstractScreen {
         // Actualizar balas y detectar colisiones
         updateBulletsAndCollisions(delta);
     }
-    
+
     private void updateBulletsAndCollisions(float delta) {
         // Actualizar balas de la nave
         List<Bullet> naveBullets = new ArrayList<>(nave.getBullets());
@@ -84,7 +85,7 @@ public class GameSingleScreen extends AbstractScreen {
             }
             // Verificar colisiones con enemigos
             for (Enemy enemy : new ArrayList<>(enemyBlock.getEnemies())) {
-                if (isCollision(bullet, enemy)) {
+                if (CollisionManager.isCollision(bullet, enemy)) {
                     enemyBlock.getEnemies().remove(enemy);
                     nave.getBullets().remove(bullet);
                     Gdx.app.log("COLLISION",
@@ -102,15 +103,17 @@ public class GameSingleScreen extends AbstractScreen {
                 if (bullet.isOutOfScreen()) {
                     enemy.getBullets().remove(bullet);
                 }
+                // Verificar colisión con la nave
+                if (nave.getIsAlive() && CollisionManager.isCollision(bullet, nave)) {
+                    nave.setIsAlive(false);
+                    enemy.getBullets().remove(bullet);
+                    Gdx.app.log("COLLISION", "Nave destruida en x: " + nave.getPosition().x + ", y: " + nave.getPosition().y);
+                    //Mostrar interfaz de fin de juego
+                    game.setScreen(new EndGameScreen(game));
+                    break;
+                }
             }
         }
-    }
-    
-    private boolean isCollision(Bullet bullet, Enemy enemy) {
-        // Detectar colisión si la bala está dentro de un rango de 20 píxeles del enemigo
-        float dx = bullet.getPosition().x - enemy.getPosition().x;
-        float dy = bullet.getPosition().y - enemy.getPosition().y;
-        return Math.sqrt(dx * dx + dy * dy) < 20;
     }
 
     @Override
