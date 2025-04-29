@@ -14,7 +14,7 @@ import io.game.gamesobject.Bullet;
 import io.game.gamesobject.Pj;
 
 public class Nave extends Pj {
-    
+
     private BitmapFont font;
     private int type;
     private float shootCooldown; // Tiempo restante hasta el próximo disparo
@@ -24,12 +24,19 @@ public class Nave extends Pj {
     public Nave(int type, float x, float y, float speed) {
         super(new Vector2(x, y), speed);
         this.type = type;
-        this.font = new BitmapFont(); 
+        this.font = new BitmapFont();
         this.bullets = new ArrayList<>();
         this.shootCooldown = 0; // Inicializa el tiempo de recarga
 
         font.getData().setScale(0.5f);
     }
+
+    public void translateX(float dx) {
+        getPosition().x += dx;
+        // Limita la posición horizontal de la nave dentro de los límites de la pantalla
+        getPosition().x = MathUtils.clamp(getPosition().x, 0, 800 - 50); // 50 es el ancho aproximado
+    }
+
 
     private String typeNave(int type) {
         return switch (type) {
@@ -76,9 +83,9 @@ public class Nave extends Pj {
             Gdx.app.log("NAVE", "Disparo en x: " + bulletX + ", y: " + bulletY);
         }
     }
-    
+
     public List<Bullet> getBullets() {
         return bullets;
     }
-     
+
 }

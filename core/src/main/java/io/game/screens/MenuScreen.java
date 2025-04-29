@@ -18,17 +18,23 @@ public class MenuScreen extends AbstractScreen {
     private Stage stage;
     private Texture background;
     private OrthographicCamera camera;
+    private GameSingleScreen singleScreen;
 
     public MenuScreen(MainGame game) {
         super(game);
         this.camera = new OrthographicCamera();
         this.stage = new Stage(new FitViewport(800, 600, camera));
-
+        this.singleScreen = new GameSingleScreen(game);
         setupBackground();
         setupButtons();
-
         Gdx.input.setInputProcessor(stage);
     }
+
+    public GameSingleScreen getSingleScreen() {
+        return singleScreen;
+    }
+
+
 
     @Override
     public void render(float delta) {
@@ -58,7 +64,7 @@ public class MenuScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("MENU", "Single Player button clicked");
-                game.setScreen(new GameSingleScreen(game));
+                game.setScreen(singleScreen);
             }
         });
 

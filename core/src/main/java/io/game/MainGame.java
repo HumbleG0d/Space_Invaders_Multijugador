@@ -1,6 +1,7 @@
 package io.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -12,12 +13,15 @@ public class MainGame extends Game {
     private SpriteBatch batch;
     public BitmapFont font;
     public FitViewport viewport;
-
+    public MenuScreen menuScreen;
     @Override
     public void create() {
         batch = new SpriteBatch();
         font = new BitmapFont();
-        setScreen(new MenuScreen(this));
+        setScreen(menuScreen=new MenuScreen(this));
+    }
+    public MenuScreen damePantalla(){
+        return this.menuScreen;
     }
 
     public void render() {

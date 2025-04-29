@@ -44,7 +44,7 @@ public class GameSingleScreen extends AbstractScreen {
         this.enemyBlock = new EnemyBlock(enemies, 50);
 
         // Inicializar nave
-        this.nave = new Nave(1, 365, 100, 50);
+        //this.nave = new Nave(1, 365, 100, 50);
     }
 
     @Override
@@ -57,22 +57,32 @@ public class GameSingleScreen extends AbstractScreen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         enemyBlock.drawPj(batch);
-        nave.drawPj(batch);
+        if(nave==null){
+
+        }else {
+            nave.drawPj(batch);
+        }
         batch.end();
     }
 
     private void update(float delta) {
         enemyBlock.movePj(delta);
-        nave.movePj(delta);
 
+        if (nave==null){
+
+        }
+        else {
+            nave.movePj(delta);
+            nave.shoot(delta, 200); // Velocidad de las balas de la nave
+            updateBulletsAndCollisions(delta);
+            enemyBlock.shoot(delta, 100); // Velocidad de las balas enemigas
+
+        }
         // Actualizar disparos
-        enemyBlock.shoot(delta, 100); // Velocidad de las balas enemigas
-        nave.shoot(delta, 200); // Velocidad de las balas de la nave
 
         // Actualizar balas y detectar colisiones
-        updateBulletsAndCollisions(delta);
     }
-    
+
     private void updateBulletsAndCollisions(float delta) {
         // Actualizar balas de la nave
         List<Bullet> naveBullets = new ArrayList<>(nave.getBullets());
@@ -88,7 +98,7 @@ public class GameSingleScreen extends AbstractScreen {
                     enemyBlock.getEnemies().remove(enemy);
                     nave.getBullets().remove(bullet);
                     Gdx.app.log("COLLISION",
-                            "Enemigo eliminado en x: " + enemy.getPosition().x + ", y: " + enemy.getPosition().y);
+                        "Enemigo eliminado en x: " + enemy.getPosition().x + ", y: " + enemy.getPosition().y);
                     break;
                 }
             }
@@ -105,7 +115,7 @@ public class GameSingleScreen extends AbstractScreen {
             }
         }
     }
-    
+
     private boolean isCollision(Bullet bullet, Enemy enemy) {
         // Detectar colisión si la bala está dentro de un rango de 20 píxeles del enemigo
         float dx = bullet.getPosition().x - enemy.getPosition().x;
@@ -120,9 +130,27 @@ public class GameSingleScreen extends AbstractScreen {
         camera.update();
     }
 
+    public void crearNave(){
+        this.nave=new Nave(1, 365, 100, 50);
+    }
+
     @Override
     public void dispose() {
         batch.dispose();
         font.dispose();
     }
+
+
+    public void moverNaveIzquierda() {
+        if (nave != null) {
+            nave.translateX(-10); // O el valor que desees
+        }
+    }
+
+    public void moverNaveDerecha() {
+        if (nave != null) {
+            nave.translateX(10); // O el valor que desees
+        }
+    }
+
 }
