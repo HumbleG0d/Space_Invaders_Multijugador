@@ -1,6 +1,5 @@
 package io.game.gamesobject.enemigues;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -15,11 +14,20 @@ public class EnemyBlock {
     public EnemyBlock(List<Enemy> enemies, float initialSpeed) {
         this.enemies = enemies;
         this.blockSpeed = initialSpeed;
+        System.out.println("EnemyBlock creado con " + this.enemies.size() + " enemigos");
+
     }
 
     public void drawPj(SpriteBatch batch) {
+        System.out.println("Dibujando EnemyBlock con " + enemies.size() + " enemigos");
         for (Enemy enemy : enemies) {
-            enemy.drawPj(batch);
+            try {
+                enemy.drawPj(batch);
+                System.out.println("Enemigo dibujado en x=" + enemy.getPosition().x + ", y=" + enemy.getPosition().y);
+            } catch (Exception e) {
+                System.err.println("Error dibujando enemigo en x=" + enemy.getPosition().x + ", y=" + enemy.getPosition().y + ": " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -93,5 +101,9 @@ public class EnemyBlock {
 
     public void setFont(BitmapFont font) {
         this.font = font;
+        for (Enemy enemy : enemies) {
+            enemy.setFont(font);
+            System.out.println("Asignado font a enemigo en x=" + enemy.getPosition().x + ", y=" + enemy.getPosition().y);
+        }
     }
 }
