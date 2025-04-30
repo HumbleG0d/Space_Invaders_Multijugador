@@ -84,4 +84,11 @@ public class Enemy extends Pj {
         getPosition().x += blockSpeed * delta;
     }
 
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    public void setFont(BitmapFont font) {
+        this.font = font;
+    }
 }
