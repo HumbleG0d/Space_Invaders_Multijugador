@@ -9,5 +9,7 @@ public interface IPj {
 
     void movePj(float delta);
 
+    void shoot(float delta, boolean shootTriggered);
+
     void shoot(float delta, float speed);
 }

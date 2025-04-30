@@ -10,7 +10,7 @@ public class Pj implements IPj {
     public Vector2 getPosition() {
         return position;
     }
-    
+
     public float getSpeed() {
         return speed;
     }
@@ -34,8 +34,13 @@ public class Pj implements IPj {
     }
 
     @Override
-    public void shoot(float delta, float speed) {
+    public void shoot(float delta, boolean shootTriggered) {
     }
-    
-    
+
+    @Override
+    public void shoot(float delta, float speed) {
+
+    }
+
+
 }
