@@ -1,6 +1,7 @@
 package io.game.gamesobject.enemigues;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 public class EnemyBlock {
     private List<Enemy> enemies;
     private float blockSpeed; // Velocidad del bloque entero
+    private BitmapFont font;
 
     public EnemyBlock(List<Enemy> enemies, float initialSpeed) {
         this.enemies = enemies;
@@ -43,7 +45,7 @@ public class EnemyBlock {
                 enemy.getPosition().x -= (maxX - 780);
             }
             blockSpeed = -Math.abs(blockSpeed);
-            Gdx.app.log("UPDATE", "Bloque baja y retrocede, minX: " + minX + ", maxX: " + maxX);
+            //Gdx.app.log("UPDATE", "Bloque baja y retrocede, minX: " + minX + ", maxX: " + maxX);
         } else if (minX <= 20) {
             // Bajar el bloque y ajustar posiciones
             for (Enemy enemy : enemies) {
@@ -51,7 +53,7 @@ public class EnemyBlock {
                 enemy.getPosition().x -= (minX - 20);
             }
             blockSpeed = Math.abs(blockSpeed);
-            Gdx.app.log("UPDATE", "Bloque baja y avanza, minX: " + minX + ", maxX: " + maxX);
+            //Gdx.app.log("UPDATE", "Bloque baja y avanza, minX: " + minX + ", maxX: " + maxX);
         }
     }
 
@@ -85,4 +87,11 @@ public class EnemyBlock {
         return enemies;
     }
 
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    public void setFont(BitmapFont font) {
+        this.font = font;
+    }
 }

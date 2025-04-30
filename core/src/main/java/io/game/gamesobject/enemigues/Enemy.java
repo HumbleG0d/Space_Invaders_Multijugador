@@ -23,8 +23,6 @@ public class Enemy extends Pj {
         super(new Vector2(x, y), speed);
         this.type = type;
         this.bullets = new ArrayList<>();
-        font = new BitmapFont(); // Inicializa la fuente aquí o pásala como parámetro
-        font.getData().setScale(0.5f);
     }
 
     public int getType(){
@@ -57,8 +55,8 @@ public class Enemy extends Pj {
         if (random.nextFloat() < 0.01f) {
             float bulletX = getPosition().x + 25; // Centro del enemigo
             float bulletY = getPosition().y - 20; // Debajo del enemigo
-            bullets.add(new Bullet(bulletX, bulletY, -speed, "*", font));
-            Gdx.app.log("ENEMY", "Enemigo tipo " + type + " dispara en x: " + bulletX + ", y: " + bulletY);
+            bullets.add(new Bullet(bulletX, bulletY, -speed, "|" , 0));
+           // Gdx.app.log("ENEMY", "Enemigo tipo " + type + " dispara en x: " + bulletX + ", y: " + bulletY);
         }
     }
 
