@@ -58,7 +58,7 @@ public class MenuScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("MENU", "Single Player button clicked");
-                game.setScreen(new GameSingleScreen(game));
+                game.setScreen(new GameMultiplayerScreen(game));
             }
         });
 
