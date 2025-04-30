@@ -21,6 +21,7 @@ public class GameSingleScreen extends AbstractScreen {
     private BitmapFont font;
     private EnemyBlock enemyBlock;
     private Nave nave;
+    private List<Nave> lasNaves = new ArrayList<>();
 
     public GameSingleScreen(MainGame game) {
         super(game);
@@ -57,10 +58,12 @@ public class GameSingleScreen extends AbstractScreen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         enemyBlock.drawPj(batch);
-        if(nave==null){
+        if(lasNaves.isEmpty()){
 
         }else {
-            nave.drawPj(batch);
+            for (Nave nave : lasNaves) {
+                nave.drawPj(batch);
+            }
         }
         batch.end();
     }
@@ -68,12 +71,16 @@ public class GameSingleScreen extends AbstractScreen {
     private void update(float delta) {
         enemyBlock.movePj(delta);
 
-        if (nave==null){
+        if (lasNaves.isEmpty()){
 
         }
         else {
-            nave.movePj(delta);
-            nave.shoot(delta, 200); // Velocidad de las balas de la nave
+
+            for (Nave nave : lasNaves) {
+                nave.movePj(delta);
+                nave.shoot(delta, 200); // Cada nave dispara con velocidad 200
+            }
+
             updateBulletsAndCollisions(delta);
             enemyBlock.shoot(delta, 100); // Velocidad de las balas enemigas
 
@@ -85,21 +92,23 @@ public class GameSingleScreen extends AbstractScreen {
 
     private void updateBulletsAndCollisions(float delta) {
         // Actualizar balas de la nave
-        List<Bullet> naveBullets = new ArrayList<>(nave.getBullets());
-        for (Bullet bullet : naveBullets) {
-            bullet.update(delta);
-            if (bullet.isOutOfScreen()) {
-                nave.getBullets().remove(bullet);
-                continue;
-            }
-            // Verificar colisiones con enemigos
-            for (Enemy enemy : new ArrayList<>(enemyBlock.getEnemies())) {
-                if (isCollision(bullet, enemy)) {
-                    enemyBlock.getEnemies().remove(enemy);
+        for (Nave nave : lasNaves) {
+            List<Bullet> naveBullets = new ArrayList<>(nave.getBullets());
+            for (Bullet bullet : naveBullets) {
+                bullet.update(delta);
+                if (bullet.isOutOfScreen()) {
                     nave.getBullets().remove(bullet);
-                    Gdx.app.log("COLLISION",
-                        "Enemigo eliminado en x: " + enemy.getPosition().x + ", y: " + enemy.getPosition().y);
-                    break;
+                    continue;
+                }
+                // Verificar colisiones con enemigos
+                for (Enemy enemy : new ArrayList<>(enemyBlock.getEnemies())) {
+                    if (isCollision(bullet, enemy)) {
+                        enemyBlock.getEnemies().remove(enemy);
+                        nave.getBullets().remove(bullet);
+                        Gdx.app.log("COLLISION",
+                            "Enemigo eliminado en x: " + enemy.getPosition().x + ", y: " + enemy.getPosition().y);
+                        break;
+                    }
                 }
             }
         }
@@ -131,7 +140,8 @@ public class GameSingleScreen extends AbstractScreen {
     }
 
     public void crearNave(){
-        this.nave=new Nave(1, 365, 100, 50);
+        Nave nave=new Nave(1, 365, 100, 50);
+        lasNaves.add(nave);
     }
 
     @Override
@@ -141,15 +151,15 @@ public class GameSingleScreen extends AbstractScreen {
     }
 
 
-    public void moverNaveIzquierda() {
-        if (nave != null) {
-            nave.translateX(-10); // O el valor que desees
+    public void moverNaveIzquierda(int i) {
+        if (!lasNaves.isEmpty()) {
+            lasNaves.get(i-1).translateX(-10); // O el valor que desees
         }
     }
 
-    public void moverNaveDerecha() {
-        if (nave != null) {
-            nave.translateX(10); // O el valor que desees
+    public void moverNaveDerecha(int i) {
+        if (!lasNaves.isEmpty()) {
+            lasNaves.get(i-1).translateX(10); // O el valor que desees
         }
     }
 

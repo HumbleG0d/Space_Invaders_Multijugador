@@ -59,12 +59,12 @@ public class AtencionCliente extends Thread {
                         break;
                     case "a":
                         com.badlogic.gdx.Gdx.app.postRunnable(() -> {
-                            gameSingleScreen.moverNaveIzquierda();
+                            gameSingleScreen.moverNaveIzquierda(nCliente);
                         });
                         break;
                     case "d":
                         com.badlogic.gdx.Gdx.app.postRunnable(() -> {
-                            gameSingleScreen.moverNaveDerecha();
+                            gameSingleScreen.moverNaveDerecha(nCliente);
                         });
                         break;
                     default:
