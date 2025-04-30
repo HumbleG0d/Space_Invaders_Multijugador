@@ -21,6 +21,7 @@ public class Nave extends Pj {
     private static final float SHOOT_COOLDOWN = 0.5f; // 0.5 segundos entre disparos
     private List<Bullet> bullets;
     private int live = 3;
+    private float speed = 200;
 
     public Nave(int playerId , int type, float x, float y, float speed) {
         super(new Vector2(x, y), speed);
@@ -67,13 +68,13 @@ public class Nave extends Pj {
     }
 
     @Override
-    public void shoot(float delta, float speed) {
+    public void shoot(float delta,boolean shootTriggered) {
         shootCooldown -= delta;
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && shootCooldown <= 0) {
+        if (shootTriggered && shootCooldown <= 0) {
             // Disparar una bala desde el centro de la nave
             float bulletX = getPosition().x + 15; // Aproximadamente el centro del diseño
             float bulletY = getPosition().y + 15; // Justo encima de la nave
-            bullets.add(new Bullet(bulletX, bulletY, speed, "|" , 0));
+            bullets.add(new Bullet(bulletX, bulletY, speed, "|" , playerId));
             shootCooldown = SHOOT_COOLDOWN;
            // Gdx.app.log("NAVE", "Disparo en x: " + bulletX + ", y: " + bulletY);
         }
