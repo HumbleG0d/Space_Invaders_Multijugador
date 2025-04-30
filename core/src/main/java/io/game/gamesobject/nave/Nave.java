@@ -14,7 +14,7 @@ import io.game.gamesobject.Bullet;
 import io.game.gamesobject.Pj;
 
 public class Nave extends Pj {
-
+    private int playerId;
     private BitmapFont font;
     private int type;
     private float shootCooldown; // Tiempo restante hasta el próximo disparo
@@ -22,14 +22,13 @@ public class Nave extends Pj {
     private List<Bullet> bullets;
     private int live = 3;
 
-    public Nave(int type, float x, float y, float speed) {
+    public Nave(int playerId , int type, float x, float y, float speed) {
         super(new Vector2(x, y), speed);
         this.type = type;
-        this.font = new BitmapFont();
+        this.playerId = playerId;
+        //this.font = new BitmapFont();
         this.bullets = new ArrayList<>();
         this.shootCooldown = 0; // Inicializa el tiempo de recarga
-
-        font.getData().setScale(0.5f);
     }
 
     private String typeNave(int type) {
@@ -44,10 +43,12 @@ public class Nave extends Pj {
 
     @Override
     public void drawPj(SpriteBatch batch) {
-        font.draw(batch, typeNave(type), getPosition().x, getPosition().y);
+        if(font != null){
+            font.draw(batch, typeNave(type), getPosition().x, getPosition().y);
 
-        for (Bullet bullet : bullets) {
-            bullet.draw(batch);
+            for (Bullet bullet : bullets) {
+                bullet.draw(batch);
+            }
         }
     }
 
@@ -72,9 +73,9 @@ public class Nave extends Pj {
             // Disparar una bala desde el centro de la nave
             float bulletX = getPosition().x + 15; // Aproximadamente el centro del diseño
             float bulletY = getPosition().y + 15; // Justo encima de la nave
-            bullets.add(new Bullet(bulletX, bulletY, speed, "|", font));
+            bullets.add(new Bullet(bulletX, bulletY, speed, "|" , 0));
             shootCooldown = SHOOT_COOLDOWN;
-            Gdx.app.log("NAVE", "Disparo en x: " + bulletX + ", y: " + bulletY);
+           // Gdx.app.log("NAVE", "Disparo en x: " + bulletX + ", y: " + bulletY);
         }
     }
 
@@ -88,5 +89,16 @@ public class Nave extends Pj {
 
     public int getLive() {
         return live;
+    }
+
+    public BitmapFont getFont() {
+        return font;
+    }
+
+    public void setFont(BitmapFont font) {
+        this.font = font;
+        for (Bullet bullet : bullets) {
+            bullet.setFont(font);
+        }
     }
 }
